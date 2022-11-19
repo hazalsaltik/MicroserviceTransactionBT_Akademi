@@ -3,60 +3,67 @@ package com.bt_akademi.transaction_management.model.service;
 import com.bt_akademi.transaction_management.model.entity.Transaction;
 import com.bt_akademi.transaction_management.utility.ExceptionMessageType;
 import com.bt_akademi.transaction_management.utility.Util;
-import org.springframework.dao.OptimisticLockingFailureException;
+import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class TransactionService extends AbstractTransactionService
 {
 
     @Override
-    protected List<Transaction> findAllByUserId(Integer userId) {
-        return transactionRepository.findAllByUserID(userId);
+    public List<Transaction> findAllByUserID(Integer userID)
+    {
+        return transactionRepository.findAllByUserID(userID);
     }
 
     @Override
-    public List<Transaction> getAll() {
+    public List<Transaction> getAll()
+    {
         return transactionRepository.findAll();
     }
 
     @Override
-    public Transaction findByID(Integer UserID) {
-        return transactionRepository.findById(UserID)
+    public Transaction findByID(Integer transactionID)
+    {
+        return transactionRepository.findById(transactionID)
                 .orElseThrow(() -> new RuntimeException(ExceptionMessageType.FIND_BY_ID.getValue()));
     }
 
     @Override
-    public Transaction save(Transaction entity) {
+    public Transaction save(Transaction entity)
+    {
         try
         {
             return transactionRepository.save(entity);
         }
-        catch (IllegalArgumentException e)
+        catch (IllegalArgumentException  e)
         {
             Util.showGeneralExceptionInfo(e);
-            return null;
+            return new Transaction();
         }
-        catch (OptimisticLockingFailureException e)
+        catch (OptimisticEntityLockException e)
         {
             Util.showGeneralExceptionInfo(e);
-            return null;
+            return new Transaction();
         }
     }
 
     @Override
-    public void delete(Integer UserID)
+    public void deleteById(Integer transactionID)
     {
-
         try
         {
-            transactionRepository.deleteById(UserID);
+            transactionRepository.deleteById(transactionID);
         }
-        catch (IllegalArgumentException e)
+        catch (IllegalArgumentException  e)
         {
             Util.showGeneralExceptionInfo(e);
         }
-
+        catch (OptimisticEntityLockException e)
+        {
+            Util.showGeneralExceptionInfo(e);
+        }
     }
 }

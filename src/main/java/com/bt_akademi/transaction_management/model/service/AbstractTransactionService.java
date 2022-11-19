@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public abstract class AbstractTransactionService  implements  EntityService <Transaction, Integer>
+public abstract class AbstractTransactionService implements EntityService<Transaction, Integer>
 {
     @Autowired
     protected TransactionRepository transactionRepository;
-    protected abstract List <Transaction> findAllByUserId(Integer userId);
 
-
+    public abstract List<Transaction> findAllByUserID(Integer userID);
 }

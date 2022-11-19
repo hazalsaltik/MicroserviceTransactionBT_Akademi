@@ -11,6 +11,6 @@ public interface EntityService<E, I>
 
     E save(E entity);
 
-    void delete(I id);
+    void deleteById(I id);
 }
 

@@ -7,43 +7,45 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@RequestMapping ("api/transaction")
+@RequestMapping("api/transaction")
 @RestController
-
-public class TransactionController {
-
+public class TransactionController
+{
     @Autowired
     private AbstractTransactionService transactionService;
-
-    @DeleteMapping()
-    public RequestBody delete (@PathVariable Integer userID)
+    @GetMapping("{userID}")
+    public ResponseEntity<List<Transaction>> getAllTransactionsOfUser(@PathVariable Integer userID)
     {
+        List<Transaction> transactionList = transactionService.findAllByUserID(userID);
 
-        return null;
+        return ResponseEntity.ok(transactionList);
     }
 
+    @DeleteMapping("delete/{transactionID}")
+    public ResponseEntity deleteTransactionByID(@PathVariable Integer transactionID)
+    {
+        transactionService.deleteById(transactionID);
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     @PostMapping
-    public  ResponseEntity<Transaction> save (@RequestBody Transaction transaction)
+    public ResponseEntity<Transaction> save(@RequestBody Transaction transaction)
     {
         transaction.setTransactionTime(new Date());
         Transaction savedTransaction = transactionService.save(transaction);
 
-        return  new ResponseEntity<>(savedTransaction, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedTransaction, HttpStatus.CREATED);
     }
 
-             @GetMapping
-             public ResponseEntity<List<Transaction>> getAll()
+    @GetMapping
+    public ResponseEntity<List<Transaction>> getAllTransactions()
+    {
+        List<Transaction> transactionList = transactionService.getAll();
 
-             {
-                 List <Transaction> transactionList = transactionService.getAll();
-
-                 return  ResponseEntity.ok(transactionList);
-   }
-
-
-
+        return ResponseEntity.ok(transactionList);
+    }
 }
