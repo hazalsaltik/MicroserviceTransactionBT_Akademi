@@ -1,0 +1,12 @@
+{
+  "name": "bt-akademi-hazal-transaction",
+
+  "buildpacks":
+          [
+            {
+              "url": "heroku/gradle"
+            }
+
+
+          ]
+}
