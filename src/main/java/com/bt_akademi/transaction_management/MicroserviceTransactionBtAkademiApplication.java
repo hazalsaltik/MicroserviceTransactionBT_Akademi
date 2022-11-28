@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.annotation.PropertySource;
 
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication
 @PropertySource(("classpath:application-${spring.profiles.active:default}.properties"))
 public class MicroserviceTransactionBtAkademiApplication {
 
